@@ -12,19 +12,19 @@ how-we-work.html      Six requirements, five stages, two routes, fees
 about.html            The firm and its principles
 insights.html         Article list
 insights/*.html       Articles (English)
-contact.html          Contact form (opens the visitor's mail app)
+contact.html          Contact
 privacy.html          Privacy notice (English)
 404.html              Not-found page
 ko/                   Korean pages (same names)
 assets/css/site.css   Styles
-assets/js/site.js     Contour fields, navigation, contact form, video loading
+assets/js/site.js     Contour fields, navigation, video loading
 assets/js/twin.js     Project twin (animated 3D site model, canvas only, no libraries)
 assets/img/           Favicon
 ```
 
 ## Media
 
-Photographs and video are hotlinked from Pexels under the Pexels licence (free for commercial use, no attribution required; a credit line is in the footer anyway). They are not stored in this repository. Each `<video>` carries up to three sources (`data-src-uhd` 3840×2160, `data-src-qhd` 2560×1440, `data-src-hd` 1920×1080); `site.js` picks the largest that suits the screen, loads it only when the element scrolls into view, and leaves the poster image in place when the visitor prefers reduced motion or has data saving on. Photographs use `srcset` up to 3840 px wide.
+Photographs and video are hotlinked from Pexels under the Pexels licence (free for commercial use, no attribution required). They are not stored in this repository. Each `<video>` carries up to three sources (`data-src-uhd` 3840×2160, `data-src-qhd` 2560×1440, `data-src-hd` 1920×1080); `site.js` picks the largest that suits the screen, loads it only when the element scrolls into view, and leaves the poster image in place when the visitor prefers reduced motion or has data saving on. Photographs use `srcset` up to 3840 px wide.
 
 To replace them with the firm's own photography, put the files in `assets/img/` and change the URLs in the pages (or in the generator's `PHOTOS` / `VIDEOS` tables).
 
@@ -32,7 +32,7 @@ The "project twin" on the home and sectors pages is an illustrative model drawn 
 
 ## Things to change before launch
 
-1. **Contact email** — `CONTACT_EMAIL` at the top of `assets/js/site.js`. It is used by the contact form and shown on the contact page.
+1. **Contact** — the contact page names a person and has no form or email address (there is no mail domain yet). When one exists, add it to the contact pages (`contact.html`, `ko/contact.html`) and to the privacy notices.
 2. **Search engines** — every page carries `<meta name="robots" content="noindex, nofollow">` while the site is in preview. Remove that line from all pages when the firm's domain is live.
 3. **Company details** — the footer and `ko/privacy.html` section 7 (개인정보 보호책임자) need the registered company name, address and the privacy officer's name once the company is incorporated.
 4. **Custom domain** — in the repository settings, Pages → Custom domain. GitHub will create a `CNAME` file. All links in the site are relative, so nothing else needs to change.

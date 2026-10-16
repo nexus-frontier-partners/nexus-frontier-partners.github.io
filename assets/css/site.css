@@ -402,6 +402,7 @@ table.plan td:first-child { color: var(--graphite); width: 22%; }
 .page-head .wrap { display: grid; grid-template-columns: var(--rail) var(--body); gap: clamp(32px, 5vw, 72px); align-items: end; }
 .page-head .kicker { font-size: 0.95rem; color: var(--graphite); margin-bottom: 10px; }
 .page-head h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); line-height: 1.06; max-width: 14ch; }
+html[lang="ko"] .page-head h1 { max-width: 18ch; line-height: 1.22; }
 html[lang="ko"] .page-head h1 { line-height: 1.2; }
 .page-head .lede { font-family: var(--serif); font-size: clamp(1.15rem, 1.7vw, 1.4rem); line-height: 1.45; color: var(--ink-soft); max-width: 36ch; font-variation-settings: "opsz" 20; }
 @media (max-width: 860px) { .page-head .wrap { grid-template-columns: 1fr; gap: 20px; } }

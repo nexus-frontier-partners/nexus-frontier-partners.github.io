@@ -1,13 +1,10 @@
 /* Nexus Frontier Partners — site script
-   1. Contour fields (canvas): the one visual element of the site.
+   1. Contour fields (canvas).
    2. Navigation toggle on small screens.
-   3. Contact form: composes an email in the visitor's mail app (no server needed).
+   3. Video: resolution choice, lazy autoplay, hover-play tiles.
 */
 (function () {
   "use strict";
-
-  // Change this once the firm's mail domain is live.
-  var CONTACT_EMAIL = "contact@nexusfrontierpartners.com";
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -186,45 +183,7 @@
     });
   }
 
-  /* ---------- 3. Contact form ---------- */
-  var form = document.querySelector("form[data-contact]");
-  if (form) {
-    var lang = document.documentElement.lang || "en";
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var err = form.querySelector(".error");
-      var consent = form.querySelector("input[name=consent]");
-      if (consent && !consent.checked) {
-        err.textContent = lang === "ko"
-          ? "개인정보 수집·이용에 동의해 주셔야 보낼 수 있습니다."
-          : "Please agree to the privacy notice before sending.";
-        consent.focus();
-        return;
-      }
-      err.textContent = "";
-      var v = function (name) { var el = form.querySelector("[name=" + name + "]"); return el ? el.value.trim() : ""; };
-      var subject = (lang === "ko" ? "문의 — " : "Enquiry — ") + v("organisation");
-      var body = (lang === "ko"
-        ? "이름: " + v("name") + "\n기관: " + v("organisation") + "\n이메일: " + v("email") + "\n\n" + v("message")
-        : "Name: " + v("name") + "\nOrganisation: " + v("organisation") + "\nEmail: " + v("email") + "\n\n" + v("message"));
-      window.location.href = "mailto:" + CONTACT_EMAIL +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
-      var note = form.querySelector(".hint");
-      if (note) {
-        note.textContent = lang === "ko"
-          ? "메일 앱이 열립니다. 열리지 않으면 " + CONTACT_EMAIL + " 로 직접 보내 주세요."
-          : "Your mail app should open with the message prepared. If it does not, write to " + CONTACT_EMAIL + ".";
-      }
-    });
-    var mailLinks = document.querySelectorAll("[data-mail]");
-    for (var m = 0; m < mailLinks.length; m++) {
-      mailLinks[m].textContent = CONTACT_EMAIL;
-      mailLinks[m].setAttribute("href", "mailto:" + CONTACT_EMAIL);
-    }
-  }
-
-  /* ---------- 4. Video: pick a resolution, play when visible, hover-play tiles ---------- */
+  /* ---------- 3. Video: pick a resolution, play when visible, hover-play tiles ---------- */
   // data-src-uhd / data-src-qhd / data-src-hd on the <video>; the largest that suits the screen is used.
   var conn = navigator.connection || {};
   var saveData = !!conn.saveData;
