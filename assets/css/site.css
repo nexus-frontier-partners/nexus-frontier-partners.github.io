@@ -650,6 +650,8 @@ html[lang="ko"] .twin-label { font-size: 0.8rem; }
 
 /* Small twin inside sector pages (light background variant keeps dark panel) */
 .twin.is-compact { aspect-ratio: 16 / 8; margin-top: 28px; }
+.twin.is-compact .twin-label { font-size: 0.68rem; padding: 4px 7px; }
+html[lang="ko"] .twin.is-compact .twin-label { font-size: 0.72rem; }
 
 /* Contour lines drift over the hero footage, like survey lines over a site */
 .hero.has-media .field { opacity: 0.34; mix-blend-mode: screen; }

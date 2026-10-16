@@ -195,7 +195,7 @@
       var pt = pitch + mouse.y * 0.05;
       cy = Math.cos(yaw); sy = Math.sin(yaw); cp = Math.cos(pt); sp = Math.sin(pt);
       camX = dist * cp * sy; camY = dist * sp; camZ = dist * cp * cy;
-      focal = Math.min(Wpx, Hpx * 1.6) * 1.22;
+      focal = Math.min(Wpx, Hpx * 1.6) * 1.4;
     }
     // Returns [sx, sy, depth] or null when behind the camera.
     function project(p) {
