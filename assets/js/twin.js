@@ -191,11 +191,13 @@
     var cy, sy, cp, sp, camX, camY, camZ, focal;
     function setCamera(t) {
       mouse.x += (mouseT.x - mouse.x) * 0.04; mouse.y += (mouseT.y - mouse.y) * 0.04;
-      var yaw = yaw0 + (reduceMotion ? 0 : 0.10 * Math.sin(t * 0.00012)) + mouse.x * 0.12;
-      var pt = pitch + mouse.y * 0.05;
+      // Narrow panels (phones) look more from above so the labels spread out.
+      var narrow = Wpx < 640;
+      var yaw = yaw0 + (narrow ? 0.25 : 0) + (reduceMotion ? 0 : 0.10 * Math.sin(t * 0.00012)) + mouse.x * 0.12;
+      var pt = (narrow ? 0.9 : pitch) + mouse.y * 0.05;
       cy = Math.cos(yaw); sy = Math.sin(yaw); cp = Math.cos(pt); sp = Math.sin(pt);
       camX = dist * cp * sy; camY = dist * sp; camZ = dist * cp * cy;
-      focal = Math.min(Wpx, Hpx * 1.6) * 1.4;
+      focal = Math.min(Wpx, Hpx * 1.6) * (narrow ? 1.5 : 1.4);
     }
     // Returns [sx, sy, depth] or null when behind the camera.
     function project(p) {
@@ -348,7 +350,11 @@
         var le = labelEls[li];
         if (!sp2 || built < 0.6) { le.style.opacity = "0"; continue; }
         le.style.opacity = String(Math.min(1, (built - 0.6) / 0.3));
-        le.style.transform = "translate(" + Math.round(sp2[0]) + "px," + Math.round(sp2[1]) + "px) translate(-50%, -100%)";
+        // keep the label inside the panel
+        var lw = le.offsetWidth || 0, lh = le.offsetHeight || 0;
+        var lx = Math.max(lw / 2 + 4, Math.min(Wpx - lw / 2 - 4, sp2[0]));
+        var ly = Math.max(lh + 4, Math.min(Hpx - 4, sp2[1]));
+        le.style.transform = "translate(" + Math.round(lx) + "px," + Math.round(ly) + "px) translate(-50%, -100%)";
       }
     }
 

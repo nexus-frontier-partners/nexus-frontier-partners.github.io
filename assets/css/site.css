@@ -539,7 +539,9 @@ html[lang="ko"] .prose.article p { font-family: var(--sans); font-size: 1.05rem;
 .page-head.has-photo .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .page-head.has-photo::after {
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: linear-gradient(to top, rgba(15,27,38,0.88) 0%, rgba(15,27,38,0.42) 45%, rgba(15,27,38,0.1) 100%);
+  background:
+    linear-gradient(to top, rgba(15,27,38,0.9) 0%, rgba(15,27,38,0.55) 42%, rgba(15,27,38,0.12) 100%),
+    linear-gradient(to right, rgba(15,27,38,0.35) 0%, rgba(15,27,38,0) 60%);
 }
 .page-head.has-photo .wrap { position: relative; z-index: 1; }
 .page-head.has-photo h1 { color: var(--paper); }
@@ -576,7 +578,7 @@ html[lang="ko"] .prose.article p { font-family: var(--sans); font-size: 1.05rem;
 .band-video .media video { opacity: 0; transition: opacity 900ms var(--ease); position: absolute; inset: 0; }
 .band-video .media video.is-playing { opacity: 1; }
 .band-video .media img { position: absolute; inset: 0; }
-.band-video::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(15,27,38,0.72) 0%, rgba(15,27,38,0.35) 50%, rgba(15,27,38,0.15) 100%); }
+.band-video::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(15,27,38,0.8) 0%, rgba(15,27,38,0.45) 50%, rgba(15,27,38,0.18) 100%); }
 .band-video .wrap { position: relative; z-index: 1; padding-top: 72px; padding-bottom: 72px; }
 .band-video h2 { color: var(--paper); font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.12; max-width: 18ch; }
 html[lang="ko"] .band-video h2 { line-height: 1.28; max-width: 22ch; }
@@ -647,6 +649,11 @@ html[lang="ko"] .twin-label { font-size: 0.8rem; }
   .twin { aspect-ratio: 4 / 3; }
 }
 .twin-caption { font-size: 0.82rem; color: var(--graphite); margin-top: 10px; }
+@media (max-width: 640px) {
+  .twin-label, .twin.is-compact .twin-label { font-size: 0.6rem; padding: 3px 5px; }
+  html[lang="ko"] .twin-label, html[lang="ko"] .twin.is-compact .twin-label { font-size: 0.64rem; }
+  .twin .twin-note { font-size: 0.62rem; }
+}
 
 /* Small twin inside sector pages (light background variant keeps dark panel) */
 .twin.is-compact { aspect-ratio: 16 / 8; margin-top: 28px; }
