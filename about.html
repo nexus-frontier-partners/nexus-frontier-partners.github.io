@@ -15,6 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..600;1,8..60,300..600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://images.pexels.com">
+  <link rel="preconnect" href="https://videos.pexels.com">
   <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
@@ -37,7 +39,8 @@
 
   <main id="main">
 
-    <section class="page-head">
+    <section class="page-head has-photo">
+      <div class="photo"><img src="https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=3840" srcset="https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=640 640w, https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=960 960w, https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=1400 1400w, https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=2000 2000w, https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=2800 2800w, https://images.pexels.com/photos/6688747/pexels-photo-6688747.jpeg?auto=compress&cs=tinysrgb&w=3840 3840w" sizes="100vw" alt="Seoul skyline along the Han River" loading="eager" decoding="async" fetchpriority="high"></div>
       <div class="wrap">
         <h1>About the firm</h1>
         <p class="lede">An independent advisory firm in Seoul, set up to make climate infrastructure projects bankable for multilateral development banks and global financial institutions.</p>
@@ -50,6 +53,7 @@
           <h2>Why we exist</h2>
         </div>
         <div class="prose">
+          <figure class="figure ratio-16x9"><img src="https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=2000" srcset="https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=640 640w, https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=960 960w, https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1400 1400w, https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=2000 2000w" sizes="(max-width: 860px) 100vw, 60vw" alt="Rows of servers in a data centre" loading="lazy" decoding="async"><figcaption>Compute, water and food: the three sectors where Korean technology meets climate finance.</figcaption></figure>
           <p>Korean companies have technology that the climate transition in Asia needs: in water, in agriculture, in energy and in the systems that run data centres. What they usually lack is the project around the technology: the sponsor, the site, the host government's request and a financial structure that a lender can underwrite.</p>
           <p>The advisory market in Korea is organised around other needs. Development consultancies evaluate and manage public programmes. Engineering firms design. Accounting firms advise investors. Nobody builds the project from the first day in the form a global financial institution will finance, and stays with it to financial close. That is the work we do.</p>
         </div>
@@ -83,13 +87,12 @@
       </div>
     </section>
 
-    <section class="band">
+    <section class="band-video is-photo">
+      <div class="media"><img src="https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=3840" srcset="https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=640 640w, https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=960 960w, https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=1400 1400w, https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=2000 2000w, https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=2800 2800w, https://images.pexels.com/photos/17448981/pexels-photo-17448981/free-photo-of-bridge-on-river-with-buildings-and-skyscraper-under-fog-behind.jpeg?auto=compress&cs=tinysrgb&w=3840 3840w" sizes="100vw" alt="Bridge over the Han River with Seoul in fog" loading="lazy" decoding="async"></div>
       <div class="wrap">
         <h2>Seoul, and wherever the project is.</h2>
-        <div>
-          <p>We work from Seoul with host governments, lenders and partners across Asia and beyond.</p>
-          <a class="button" href="contact.html">Contact</a>
-        </div>
+        <p>We work from Seoul with host governments, lenders and partners across Asia and beyond.</p>
+        <p class="actions"><a class="button on-dark" href="contact.html">Contact</a></p>
       </div>
     </section>
 
@@ -121,9 +124,11 @@
       <div class="legal">
         <span>© <span data-year>2026</span> Nexus Frontier Partners (provisional name). All rights reserved.</span>
         <span>This site describes advisory services. It is not investment advice and not an offer of securities.</span>
+        <span class="credits">Photography and video: Pexels contributors, used under the Pexels licence.</span>
       </div>
     </div>
   </footer>
   <script src="assets/js/site.js"></script>
+  <script src="assets/js/twin.js"></script>
 </body>
 </html>

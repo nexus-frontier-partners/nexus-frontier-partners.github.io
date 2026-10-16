@@ -224,6 +224,55 @@
     }
   }
 
+  /* ---------- 4. Video: pick a resolution, play when visible, hover-play tiles ---------- */
+  // data-src-uhd / data-src-qhd / data-src-hd on the <video>; the largest that suits the screen is used.
+  var conn = navigator.connection || {};
+  var saveData = !!conn.saveData;
+  var effW = Math.round(window.innerWidth * Math.min(window.devicePixelRatio || 1, 2));
+  function pickSource(v) {
+    var uhd = v.getAttribute("data-src-uhd"), qhd = v.getAttribute("data-src-qhd"), hd = v.getAttribute("data-src-hd");
+    if (saveData) return hd || qhd || uhd;
+    if (effW >= 3000 && uhd) return uhd;
+    if (effW >= 1800 && qhd) return qhd;
+    return hd || qhd || uhd;
+  }
+  var videos = document.querySelectorAll("video[data-src-hd], video[data-src-qhd], video[data-src-uhd]");
+  function arm(v) {
+    if (v.getAttribute("data-armed")) return;
+    v.setAttribute("data-armed", "1");
+    var src = pickSource(v);
+    if (!src) return;
+    v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute("playsinline", "");
+    v.addEventListener("playing", function () { v.classList.add("is-playing"); });
+    v.src = src;
+    v.load();
+  }
+  function tryPlay(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+
+  if (reduceMotion) {
+    // Leave posters in place; no autoplay.
+  } else if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        if (v.getAttribute("data-hover") === "true") return;
+        if (en.isIntersecting) { arm(v); tryPlay(v); } else if (!v.paused) { v.pause(); }
+      });
+    }, { rootMargin: "200px 0px", threshold: 0.05 });
+    for (var vi = 0; vi < videos.length; vi++) io.observe(videos[vi]);
+  } else {
+    for (var vj = 0; vj < videos.length; vj++) { arm(videos[vj]); tryPlay(videos[vj]); }
+  }
+  // Hover-play tiles (desktop pointers only)
+  var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  for (var vk = 0; vk < videos.length; vk++) (function (v) {
+    if (v.getAttribute("data-hover") !== "true") return;
+    var host = v.closest(".tile") || v.parentNode;
+    if (!fine || reduceMotion) return;
+    host.addEventListener("mouseenter", function () { arm(v); tryPlay(v); });
+    host.addEventListener("mouseleave", function () { v.pause(); v.classList.remove("is-playing"); });
+  })(videos[vk]);
+
   /* ---------- Year ---------- */
   var y = document.querySelector("[data-year]");
   if (y) y.textContent = new Date().getFullYear();
