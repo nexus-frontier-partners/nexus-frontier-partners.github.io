@@ -19,8 +19,12 @@ ko/                   Korean pages (same names)
 assets/css/site.css   Styles
 assets/js/site.js     Contour fields, navigation, video loading
 assets/js/twin.js     Project twin (animated 3D site model, canvas only, no libraries)
-assets/img/           Favicon
+assets/img/           Wordmark (logo-horizontal*.svg, logo-stacked*.svg), mark.svg, favicon.svg
 ```
+
+## Wordmark
+
+The wordmark is set in Libre Caslon Display (SIL Open Font License) and stored as outlines, so it renders identically everywhere without loading the font. Two lockups: horizontal (header) and stacked "Nexus Frontier / Partners" (footer, documents). Colours: deep water `#0F1B26` on paper, or paper `#F7F3EE` on dark backgrounds. The pages inline the SVG so it takes the page colour; the files in `assets/img/` are for use elsewhere.
 
 ## Media
 

@@ -692,5 +692,14 @@ html[lang="ko"] .twin.is-compact .twin-label { font-size: 0.72rem; }
 /* Lazy images fade in once loaded */
 img[loading="lazy"] { transition: opacity 500ms var(--ease); }
 
+/* Wordmark (inline SVG outlines) */
+.logo { display: block; fill: currentColor; height: auto; }
+.site-header .wordmark { color: var(--water); display: inline-flex; align-items: center; }
+.site-header .logo-h { height: 22px; width: auto; }
+.site-header .logo-h path { stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }  /* steadies the hairlines at small sizes */
+.site-footer .wordmark { color: var(--ink); display: inline-block; margin-bottom: 18px; }
+.site-footer .logo-s { height: 56px; width: auto; }
+@media (max-width: 640px) { .site-header .logo-h { height: 18px; } }
+
 /* Credits in footer */
 .site-footer .credits { font-size: 0.78rem; color: var(--graphite); margin-top: 6px; }
