@@ -123,13 +123,23 @@
     // ---------- site elements ----------
     function onGround(x, z, lift) { return [x, height(x, z) + (lift || 0), z]; }
     var show = {
-      plant: kind !== "agri",
+      plant: kind !== "agri" && kind !== "re",
       solar: kind !== "water",
       dc: kind === "project" || kind === "dc",
       farm: kind === "agri" || kind === "project" || kind === "water",
+      wind: kind === "re" || kind === "project",
+      bess: kind === "re",
+      grid: kind === "re",
       reservoir: true
     };
-    var plant = { x: -4, z: 12 }, dc = { x: 22, z: 12 }, solar = { x: 18, z: -14 }, sub = { x: 8, z: -1 }, farm = { x: -4, z: -14 };
+    var plant = { x: -4, z: 12 }, dc = { x: 22, z: 12 }, sub = { x: 8, z: -1 }, farm = { x: -4, z: -14 };
+    // In the renewables model the array sits on the flat ground and the turbines take the ridge.
+    var solar = kind === "re" ? { x: -6, z: -14 } : { x: 18, z: -14 };
+    var turbines = kind === "re"
+      ? [{ x: 20, z: -23, ph: 0.3 }, { x: 29, z: -16, ph: 2.1 }, { x: 26, z: -6, ph: 4.0 }, { x: 36, z: -11, ph: 1.2 }, { x: 34, z: -22, ph: 5.1 }]
+      : [{ x: 36, z: -22, ph: 0.8 }, { x: 38, z: -9, ph: 2.9 }];
+    var bess = { x: 13, z: -5 };
+    var gridPath = [[sub.x, sub.z], [12, 9], [16, 18], [22, 27]];
 
     // Paths for flows: water (reservoir -> plant -> dc / farm) and power (solar -> sub -> dc / plant)
     function path(points) {
@@ -148,6 +158,9 @@
     if (show.solar && show.plant && !show.dc) flows.push({ color: AMBER, p: path([[sub.x, sub.z], [plant.x + 3, plant.z - 3]]), n: 5, speed: 0.06 });
     if (!show.plant && show.farm) flows.push({ color: BLUE, p: path([[basin.x + 3, basin.z - 7], [-9, -9], [farm.x, farm.z + 4]]), n: 6, speed: 0.04 });
     if (show.solar && show.farm && !show.dc && !show.plant) flows.push({ color: AMBER, p: path([[sub.x, sub.z], [farm.x + 6, farm.z + 2]]), n: 5, speed: 0.06 });
+    if (show.wind) flows.push({ color: AMBER, p: path([[turbines[1].x, turbines[1].z + 2], [20, -8], [sub.x + 1, sub.z - 1]]), n: 6, speed: 0.06 });
+    if (show.bess) flows.push({ color: AMBER, p: path([[sub.x + 1.5, sub.z - 1], [bess.x - 1.5, bess.z]]), n: 3, speed: 0.08 });
+    if (show.grid) flows.push({ color: AMBER, p: path(gridPath), n: 9, speed: 0.05 });
 
     // ---------- canvas ----------
     var canvas = document.createElement("canvas");
@@ -158,17 +171,20 @@
     el.appendChild(labelsBox);
 
     var L10N = {
-      en: { reservoir: "Reservoir", plant: "Treatment and reuse plant", dc: "Data centre campus", solar: "Solar array and storage", farm: "Irrigated farmland", sub: "Substation" },
-      ko: { reservoir: "저수지", plant: "처리·재이용 플랜트", dc: "데이터센터 캠퍼스", solar: "태양광·저장장치", farm: "관개 농지", sub: "변전소" }
+      en: { reservoir: "Reservoir", plant: "Treatment and reuse plant", dc: "Data centre campus", solar: "Solar array and storage", solar2: "Solar array", farm: "Irrigated farmland", sub: "Substation", wind: "Wind farm", bess: "Battery storage (BESS)", grid: "Grid connection" },
+      ko: { reservoir: "저수지", plant: "처리·재이용 플랜트", dc: "데이터센터 캠퍼스", solar: "태양광·저장장치", solar2: "태양광", farm: "관개 농지", sub: "변전소", wind: "풍력 발전단지", bess: "배터리 저장장치(ESS)", grid: "계통 연계" }
     };
     var T = L10N[lang === "ko" ? "ko" : "en"];
     var labelDefs = [];
     if (show.reservoir) labelDefs.push({ key: "reservoir", at: [basin.x, basin.z], lift: 1.2 });
     if (show.plant) labelDefs.push({ key: "plant", at: [plant.x, plant.z], lift: 3.2 });
     if (show.dc) labelDefs.push({ key: "dc", at: [dc.x, dc.z], lift: 4.2 });
-    if (show.solar) labelDefs.push({ key: "solar", at: [solar.x, solar.z], lift: 2.4 });
+    if (show.solar) labelDefs.push({ key: kind === "re" ? "solar2" : "solar", at: [solar.x, solar.z], lift: 2.4 });
     if (show.farm) labelDefs.push({ key: "farm", at: [farm.x, farm.z], lift: 1.6 });
     if (show.solar) labelDefs.push({ key: "sub", at: [sub.x, sub.z], lift: 2.2 });
+    if (show.wind) labelDefs.push({ key: "wind", at: [turbines[kind === "re" ? 1 : 0].x, turbines[kind === "re" ? 1 : 0].z], lift: 10.5 });
+    if (show.bess) labelDefs.push({ key: "bess", at: [bess.x, bess.z], lift: 1.8 });
+    if (show.grid) labelDefs.push({ key: "grid", at: [gridPath[2][0], gridPath[2][1]], lift: 5.5 });
     var labelEls = labelDefs.map(function (d) {
       var s = document.createElement("span");
       s.className = "twin-label";
@@ -314,6 +330,32 @@
           }
           box(sub.x, sub.z, 2.4, 2.4, 1.0, PAPER, 0.7 * a);
           box(solar.x + 11, solar.z + 1, 2.4, 1.4, 1.2, PAPER, 0.7 * a);
+        }
+        if (show.wind) {
+          for (var ti = 0; ti < turbines.length; ti++) {
+            var tb = turbines[ti], ty0 = height(tb.x, tb.z), hub = ty0 + 7.5, rz = tb.z - 0.35;
+            line([[tb.x, ty0, tb.z], [tb.x, hub, tb.z]], PAPER, 0.8 * a, 1.1);                     // tower
+            line([[tb.x - 0.5, hub, tb.z + 0.3], [tb.x + 0.5, hub, tb.z + 0.3], [tb.x + 0.5, hub, tb.z - 0.6], [tb.x - 0.5, hub, tb.z - 0.6], [tb.x - 0.5, hub, tb.z + 0.3]], PAPER, 0.7 * a, 0.8); // nacelle
+            var rot = tb.ph + (reduceMotion ? 0 : t * 0.0011);
+            for (var bl = 0; bl < 3; bl++) {
+              var ang = rot + bl * 2.0944;
+              line([[tb.x, hub, rz], [tb.x + Math.cos(ang) * 3.4, hub + Math.sin(ang) * 3.4, rz]], PAPER, 0.85 * a, 1.0);
+            }
+            circle(tb.x, tb.z, 0.9, 0.1, PAPER, 0.35 * a, 16);                                        // foundation
+          }
+        }
+        if (show.bess) {
+          for (var bi = 0; bi < 4; bi++) box(bess.x, bess.z - 3 + bi * 2, 1.7, 1.0, 0.8, PAPER, 0.75 * a);
+          box(bess.x + 2.6, bess.z, 1.2, 1.2, 0.9, PAPER, 0.6 * a);                                   // inverter / PCS
+        }
+        if (show.grid) {
+          for (var gi = 0; gi < gridPath.length; gi++) {
+            var gp = gridPath[gi], gy = height(gp[0], gp[1]);
+            line([[gp[0], gy, gp[1]], [gp[0], gy + 4.2, gp[1]]], PAPER, 0.7 * a, 1.0);               // pylon
+            line([[gp[0] - 1.1, gy + 3.6, gp[1]], [gp[0] + 1.1, gy + 3.6, gp[1]]], PAPER, 0.7 * a, 0.9); // cross arm
+          }
+          var wire = []; for (var gj = 0; gj < gridPath.length; gj++) wire.push([gridPath[gj][0], height(gridPath[gj][0], gridPath[gj][1]) + 3.6, gridPath[gj][1]]);
+          line(wire, PAPER, 0.45 * a, 0.8);
         }
         if (show.farm) {
           for (var fr = 0; fr < 6; fr++) {

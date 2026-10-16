@@ -338,6 +338,23 @@ html[lang="ko"] .statement p { font-size: clamp(1.3rem, 2.2vw, 1.8rem); line-hei
   .stage { border-left: 0; padding-left: 0; border-top: 1px solid var(--hairline); padding: 16px 0; }
 }
 
+.stage .gate { display: block; font-family: var(--sans); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 10px 0 0; }
+html[lang="ko"] .stage .gate { letter-spacing: 0.02em; }
+
+/* Standards list (named frameworks we work to) */
+.standards { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 40px; }
+.standards > div { border-top: 1px solid var(--hairline); padding-top: 14px; }
+.standards h4 { font-family: var(--sans); font-weight: 600; font-size: 0.92rem; color: var(--ink); margin-bottom: 8px; letter-spacing: 0; }
+.standards p { font-size: 0.95rem; color: var(--ink-soft); }
+@media (max-width: 860px) { .standards { grid-template-columns: 1fr; } }
+
+/* Four sector tiles */
+.tiles.is-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.tiles.is-4 .tile h3 { font-size: 1.12rem; }
+.tiles.is-4 .tile p { font-size: 0.92rem; }
+@media (max-width: 1100px) { .tiles.is-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .tiles.is-4 { grid-template-columns: 1fr; } }
+
 /* Plan comparison table */
 .table-wrap { overflow-x: auto; }
 table.plan { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
@@ -636,7 +653,7 @@ html[lang="ko"] .twin-label { font-size: 0.8rem; }
 .twin-hud { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(247,243,238,0.18); }
 .twin-hud li {
   display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center;
-  padding: 12px 0; border-bottom: 1px solid rgba(247,243,238,0.14); position: relative; font-size: 0.92rem;
+  padding: 9px 0; border-bottom: 1px solid rgba(247,243,238,0.14); position: relative; font-size: 0.88rem; line-height: 1.35;
 }
 .twin-hud .num { font-family: var(--serif); color: rgba(247,243,238,0.6); font-size: 1rem; }
 .twin-hud .state { font-size: 0.78rem; color: rgba(247,243,238,0.5); transition: color 300ms var(--ease); }
