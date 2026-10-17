@@ -1,2 +1,25 @@
+# Preview site: kept out of search engines until launch.
+# Link-preview fetchers (messengers, social) may read pages so shared links show a title and image.
+User-agent: kakaotalk-scrap
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
 User-agent: *
 Disallow: /

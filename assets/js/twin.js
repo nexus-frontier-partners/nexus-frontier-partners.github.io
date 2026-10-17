@@ -386,17 +386,31 @@
         }
       }
 
-      // labels
+      // labels: keep inside the panel, and lift a label that would sit on top of an earlier one
+      var placed = [];
       for (var li = 0; li < labelDefs.length; li++) {
         var d = labelDefs[li], sp2 = project(onGround(d.at[0], d.at[1], d.lift));
         var le = labelEls[li];
         if (!sp2 || built < 0.6) { le.style.opacity = "0"; continue; }
         le.style.opacity = String(Math.min(1, (built - 0.6) / 0.3));
-        // keep the label inside the panel
         var lw = le.offsetWidth || 0, lh = le.offsetHeight || 0;
         var lx = Math.max(lw / 2 + 4, Math.min(Wpx - lw / 2 - 4, sp2[0]));
         var ly = Math.max(lh + 4, Math.min(Hpx - 4, sp2[1]));
-        le.style.transform = "translate(" + Math.round(lx) + "px," + Math.round(ly) + "px) translate(-50%, -100%)";
+        var target = 0;
+        for (var pass = 0; pass < 4; pass++) {
+          var hit = false;
+          for (var pi = 0; pi < placed.length; pi++) {
+            var o = placed[pi];
+            var top = ly + target - lh, bottom = ly + target;
+            if (lx - lw / 2 < o.r + 3 && lx + lw / 2 > o.l - 3 && top < o.b + 3 && bottom > o.t - 3) { target = (o.t - 4) - ly; hit = true; }
+          }
+          if (!hit) break;
+        }
+        if (ly + target - lh < 2) target = 2 + lh - ly;
+        d.off = d.off === undefined ? target : d.off + (target - d.off) * 0.25;   // ease, so labels do not jump
+        var fy = ly + d.off;
+        placed.push({ l: lx - lw / 2, r: lx + lw / 2, t: fy - lh, b: fy });
+        le.style.transform = "translate(" + Math.round(lx) + "px," + Math.round(fy) + "px) translate(-50%, -100%)";
       }
     }
 

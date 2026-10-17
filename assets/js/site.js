@@ -1,7 +1,7 @@
 /* Nexus Frontier Partners — site script
    1. Contour fields (canvas).
-   2. Navigation toggle on small screens.
-   3. Video: resolution choice, lazy autoplay, hover-play tiles.
+   2. Header (floating over the opening image on small screens) and the menu.
+   3. Video: resolution by drawn size, lazy autoplay, hover-play tiles, in-view play on touch screens.
 */
 (function () {
   "use strict";
@@ -139,9 +139,10 @@
     function seg(p, q) { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); }
 
     var running = false, last = 0, visible = true;
+    var interval = window.innerWidth < 641 ? 66 : 33;   // ~15 fps on phones, ~30 fps elsewhere
     function frame(ts) {
       if (!running) return;
-      if (visible && ts - last > 33) { last = ts; draw(ts); }
+      if (visible && ts - last > interval) { last = ts; draw(ts); }
       requestAnimationFrame(frame);
     }
 
@@ -172,27 +173,108 @@
   var fields = document.querySelectorAll(".field");
   for (var f = 0; f < fields.length; f++) makeField(fields[f]);
 
-  /* ---------- 2. Navigation ---------- */
+  /* ---------- 2. Header and navigation ---------- */
+  // Below desktop width the header floats over the opening image, turns solid once the
+  // image has scrolled past, hides while reading downwards and returns when scrolling up.
+  var header = document.querySelector(".site-header");
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.querySelector(".nav");
-  if (toggle && nav) {
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      document.body.style.overflow = open ? "hidden" : "";
-    });
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  var opener = document.querySelector("main > .hero, main > .page-head.has-photo, main > .article-hero");
+  var mqSmall = window.matchMedia("(max-width: 1023px)");
+  var lastY = window.pageYOffset || 0, ticking = false;
+
+  function menuOpen() { return nav && nav.classList.contains("is-open"); }
+  function setTheme(c) { if (themeMeta && themeMeta.getAttribute("content") !== c) themeMeta.setAttribute("content", c); }
+
+  function updateHeader() {
+    ticking = false;
+    if (!header) return;
+    var y = window.pageYOffset || 0;
+    var hh = header.offsetHeight || 60;
+    var limit = opener ? opener.offsetTop + opener.offsetHeight - hh : 0;
+    var solid = !opener || y > limit;
+    header.classList.toggle("is-solid", solid);
+    if (mqSmall.matches && !menuOpen()) {
+      if (y > lastY + 6 && y > Math.max(limit, hh * 3)) header.classList.add("is-hidden");
+      else if (y < lastY - 6 || y <= hh) header.classList.remove("is-hidden");
+    } else {
+      header.classList.remove("is-hidden");
+    }
+    if (!menuOpen()) setTheme(solid || !mqSmall.matches ? "#F7F3EE" : "#0F1B26");
+    lastY = y;
   }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateHeader); }
+  }, { passive: true });
+  window.addEventListener("resize", function () { requestAnimationFrame(updateHeader); });
+  updateHeader();
+
+  function setMenu(open) {
+    if (!nav || !toggle) return;
+    nav.classList.toggle("is-open", open);
+    header.classList.toggle("menu-open", open);
+    header.classList.remove("is-hidden");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    toggle.setAttribute("aria-label", toggle.getAttribute(open ? "data-label-close" : "data-label-open") || "Menu");
+    document.documentElement.classList.toggle("nav-locked", open);
+    if (open) {
+      setTheme("#0F1B26");
+      var first = nav.querySelector("a");
+      if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 380);
+    } else {
+      updateHeader();
+    }
+  }
+  if (toggle && nav) {
+    toggle.addEventListener("click", function () { setMenu(!menuOpen()); });
+    nav.addEventListener("click", function (e) { if (e.target.closest("a") && mqSmall.matches) setMenu(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && menuOpen()) { setMenu(false); toggle.focus(); }
+    });
+    var onMq = function () { if (!mqSmall.matches && menuOpen()) setMenu(false); updateHeader(); };
+    if (mqSmall.addEventListener) mqSmall.addEventListener("change", onMq); else if (mqSmall.addListener) mqSmall.addListener(onMq);
+  }
+
+  /* ---------- Swipeable sector cards on phones: progress line and counter ---------- */
+  var tileRows = document.querySelectorAll(".tiles");
+  for (var tr = 0; tr < tileRows.length; tr++) (function (row) {
+    var items = row.querySelectorAll(".tile");
+    if (items.length < 2) return;
+    var prog = document.createElement("div");
+    prog.className = "tiles-progress";
+    prog.setAttribute("aria-hidden", "true");
+    prog.innerHTML = '<span class="track"><span class="fill"></span></span><span class="count"></span>';
+    row.parentNode.insertBefore(prog, row.nextSibling);
+    var fill = prog.querySelector(".fill"), count = prog.querySelector(".count");
+    fill.style.width = (100 / items.length) + "%";
+    function upd() {
+      var max = row.scrollWidth - row.clientWidth;
+      var t = max > 0 ? Math.min(1, Math.max(0, row.scrollLeft / max)) : 0;
+      fill.style.transform = "translateX(" + (t * (items.length - 1) * 100) + "%)";
+      count.textContent = (Math.round(t * (items.length - 1)) + 1) + " / " + items.length;
+    }
+    var raf = 0;
+    row.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; upd(); }); }, { passive: true });
+    window.addEventListener("resize", upd);
+    upd();
+  })(tileRows[tr]);
 
   /* ---------- 3. Video: pick a resolution, play when visible, hover-play tiles ---------- */
   // data-src-uhd / data-src-qhd / data-src-hd on the <video>; the largest that suits the screen is used.
   var conn = navigator.connection || {};
-  var saveData = !!conn.saveData;
-  var effW = Math.round(window.innerWidth * Math.min(window.devicePixelRatio || 1, 2));
+  var saveData = !!conn.saveData || /(^|-)2g|3g/.test(conn.effectiveType || "");
+  // The source is chosen from the size the video is drawn at (object-fit: cover), not the window:
+  // a portrait phone shows a 16:9 clip at full screen height, so height is what has to be sharp.
   function pickSource(v) {
     var uhd = v.getAttribute("data-src-uhd"), qhd = v.getAttribute("data-src-qhd"), hd = v.getAttribute("data-src-hd");
     if (saveData) return hd || qhd || uhd;
-    if (effW >= 3000 && uhd) return uhd;
-    if (effW >= 1800 && qhd) return qhd;
+    var box = (v.parentNode && v.parentNode.getBoundingClientRect) ? v.parentNode.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
+    var w = box.width || window.innerWidth, h = box.height || w * 9 / 16;
+    var need = Math.max(w * 9 / 16, h) * Math.min(window.devicePixelRatio || 1, 2);
+    if (window.innerWidth < 641) need = Math.min(need, 1440);       // phones: up to 2560×1440
+    if (need > 1500 && uhd) return uhd;
+    if (need > 1100 && qhd) return qhd;
     return hd || qhd || uhd;
   }
   var videos = document.querySelectorAll("video[data-src-hd], video[data-src-qhd], video[data-src-uhd]");
@@ -222,8 +304,28 @@
   } else {
     for (var vj = 0; vj < videos.length; vj++) { arm(videos[vj]); tryPlay(videos[vj]); }
   }
-  // Hover-play tiles (desktop pointers only)
+  // Touch screens: a sector card's clip plays while the card is mostly in view.
   var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!fine && !reduceMotion && "IntersectionObserver" in window) {
+    var tileIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target.querySelector("video[data-hover]");
+        if (!v) return;
+        if (en.intersectionRatio >= 0.7) { arm(v); tryPlay(v); }
+        else if (!v.paused) { v.pause(); }
+      });
+    }, { threshold: [0, 0.7, 1] });
+    var tiles = document.querySelectorAll(".tile");
+    for (var tt = 0; tt < tiles.length; tt++) if (tiles[tt].querySelector("video[data-hover]")) tileIo.observe(tiles[tt]);
+  }
+  document.addEventListener("visibilitychange", function () {
+    for (var q = 0; q < videos.length; q++) {
+      var vv = videos[q];
+      if (document.hidden) { if (!vv.paused) { vv.pause(); vv.setAttribute("data-resume", "1"); } }
+      else if (vv.getAttribute("data-resume")) { vv.removeAttribute("data-resume"); tryPlay(vv); }
+    }
+  });
+  // Hover-play tiles (desktop pointers only)
   for (var vk = 0; vk < videos.length; vk++) (function (v) {
     if (v.getAttribute("data-hover") !== "true") return;
     var host = v.closest(".tile") || v.parentNode;

@@ -42,6 +42,13 @@ The "project twin" on the home and sectors pages is an illustrative model drawn 
 4. **Custom domain** — in the repository settings, Pages → Custom domain. GitHub will create a `CNAME` file. All links in the site are relative, so nothing else needs to change.
 5. **Photos and video** — currently Pexels stock media (see Media above). Replace with the firm's own project photography when available.
 
+## Phones and tablets
+
+Layouts are tuned for three ranges: phones (≤ 640 px), tablets (641–1023 px) and desktop (≥ 1024 px).
+Below 1024 px the header floats over the opening photo or video and turns solid once it has scrolled past; it hides while reading downwards and comes back when scrolling up. The menu opens full screen. Sector cards become a swipeable row on phones, comparison tables become stacked cards, and the five stages become a vertical sequence. Video quality is chosen from the size the clip is drawn at (a portrait phone gets up to 2560 × 1440), and clips pause when off screen or when the tab is hidden.
+
+Icons and link previews: `assets/img/apple-touch-icon.png` (home screen), `favicon-32.png`, and `og.jpg` (1200 × 630 card used by KakaoTalk, iMessage, Slack and others). `SITE_URL` in the generator must be updated when the custom domain is mapped, because preview cards need absolute URLs. `robots.txt` keeps search engines out but lets link-preview fetchers read the pages.
+
 ## Editing
 
 Pages are plain HTML. Shared parts (header, footer) are repeated in each file; a change to them has to be made in every page. Keep the design rules: paper background, serif headings, one accent colour, hairlines instead of boxes; photography and video are aerial, muted and infrastructural, never people-centred or corporate stock.
