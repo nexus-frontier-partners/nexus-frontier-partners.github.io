@@ -258,15 +258,15 @@ html[lang="ko"] .statement p { font-size: clamp(1.3rem, 2.2vw, 1.8rem); line-hei
 /* Requirement rows */
 .rows { border-top: 1px solid var(--hairline); }
 .rows-head {
-  display: grid; grid-template-columns: 64px minmax(0, 5fr) minmax(0, 7fr); gap: 24px;
+  display: grid; grid-template-columns: 64px minmax(0, 6fr) minmax(0, 6fr); gap: 28px;
   padding: 0 0 10px; font-size: 0.82rem; color: var(--graphite);
 }
 .rows-head + .rows { border-top-color: var(--hairline-strong); }
 @media (max-width: 860px) { .rows-head { display: none; } }
 .row {
   display: grid;
-  grid-template-columns: 64px minmax(0, 5fr) minmax(0, 7fr);
-  gap: 24px;
+  grid-template-columns: 64px minmax(0, 6fr) minmax(0, 6fr);
+  gap: 28px;
   padding: 22px 0;
   border-bottom: 1px solid var(--hairline);
 }
@@ -314,11 +314,13 @@ html[lang="ko"] .statement p { font-size: clamp(1.3rem, 2.2vw, 1.8rem); line-hei
 @media (max-width: 860px) { .standards { grid-template-columns: 1fr; } }
 
 /* Four sector tiles */
-.tiles.is-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
-.tiles.is-4 .tile h3 { font-size: 1.12rem; }
-.tiles.is-4 .tile p { font-size: 0.92rem; }
-@media (max-width: 1100px) { .tiles.is-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px) { .tiles.is-4 { grid-template-columns: 1fr; } }
+/* four sectors sit in the body column as a 2 × 2 grid on desktop and tablet; phones swipe */
+.tiles.is-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 28px; }
+@media (min-width: 900px) {
+  .stages.is-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 0; }
+  .stages.is-6 .stage { border-top: 1px solid var(--hairline-strong); padding-top: 18px; padding-bottom: 24px; }
+  .stages.is-6 .stage:nth-child(3n+1) { border-left: 0; padding-left: 0; }
+}
 
 /* Plan comparison table */
 .table-wrap { overflow-x: auto; }
@@ -1014,7 +1016,7 @@ html.nav-locked, html.nav-locked body { overflow: hidden; }
 
 /* ---------- Tablet refinements ---------- */
 @media (min-width: 641px) and (max-width: 860px) {
-  .row { grid-template-columns: 56px minmax(0, 5fr) minmax(0, 7fr); }
+  .row { grid-template-columns: 56px minmax(0, 6fr) minmax(0, 6fr); }
   .row p { grid-column: auto; }
 }
 @media (min-width: 641px) and (max-width: 1023px) {
@@ -1039,4 +1041,11 @@ html.nav-locked, html.nav-locked body { overflow: hidden; }
 }
 @media (max-width: 640px) {
   .hero.has-media .field { opacity: 0.2; }
+}
+
+/* Column labels inside appraisal rows: only on phones, where the column heads are hidden */
+.row-label { display: none; }
+@media (max-width: 860px) {
+  .row .row-label { display: block; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; color: var(--graphite); margin-bottom: 4px; }
+  .row > p { margin-top: 10px; }
 }

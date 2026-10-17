@@ -7,8 +7,8 @@ Static site for Nexus Frontier Partners (provisional name). Plain HTML, CSS and 
 ```
 index.html            Home (English)
 what-we-do.html       Services
-sectors.html          Sectors
-how-we-work.html      Six requirements, five stages, two routes, fees
+sectors.html          Four sectors: food security, water, AI data centres, renewables (wind, solar, storage)
+how-we-work.html      Appraisal criteria, six stages, sovereign/nonsovereign tracks, standards, fees
 about.html            The firm and its principles
 insights.html         Article list
 insights/*.html       Articles (English)

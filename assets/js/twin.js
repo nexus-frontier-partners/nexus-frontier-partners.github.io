@@ -130,7 +130,7 @@
       wind: kind === "re" || kind === "project",
       bess: kind === "re",
       grid: kind === "re",
-      reservoir: true
+      reservoir: kind !== "re"
     };
     var plant = { x: -4, z: 12 }, dc = { x: 22, z: 12 }, sub = { x: 8, z: -1 }, farm = { x: -4, z: -14 };
     // In the renewables model the array sits on the flat ground and the turbines take the ridge.
