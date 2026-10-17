@@ -1037,3 +1037,6 @@ html.nav-locked, html.nav-locked body { overflow: hidden; }
   .nav .lang .lang-short { display: none; }
   .nav .lang .lang-long { display: inline; }
 }
+@media (max-width: 640px) {
+  .hero.has-media .field { opacity: 0.2; }
+}
