@@ -1047,3 +1047,27 @@ html.nav-locked, html.nav-locked body { overflow: hidden; }
   .row .row-label { display: block; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; color: var(--graphite); margin-bottom: 4px; }
   .row > p { margin-top: 10px; }
 }
+
+/* ---------- v4: compact capability list, criteria grid, standards line ---------- */
+.caps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; border-top: 1px solid var(--hairline-strong); }
+.caps li { padding: 15px 0; border-bottom: 1px solid var(--hairline); font-size: 1rem; line-height: 1.45; color: var(--ink); }
+.criteria { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; border-top: 1px solid var(--hairline-strong); }
+.criteria > div { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 10px; padding: 20px 0 18px; border-bottom: 1px solid var(--hairline); }
+.criteria .num { font-family: var(--serif); color: var(--graphite); font-size: 1.05rem; line-height: 1.5; }
+.criteria h3 { font-size: 1.16rem; line-height: 1.3; margin-bottom: 6px; }
+.criteria p { font-size: 0.95rem; color: var(--ink-soft); margin: 0; }
+.standards-line { margin-top: 40px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 0; font-family: var(--sans); font-size: 0.9rem; color: var(--graphite); }
+.standards-line span { padding: 0 16px; border-left: 1px solid var(--hairline-strong); line-height: 1.3; }
+.standards-line .label { padding-left: 0; padding-right: 18px; border-left: 0; color: var(--ink); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+html[lang="ko"] .standards-line .label { letter-spacing: 0.04em; font-size: 0.78rem; }
+.standards-line .label + span { border-left: 0; padding-left: 0; }
+@media (max-width: 720px) {
+  .caps, .criteria { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .standards-line { margin-top: 30px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 18px; font-size: 0.86rem; }
+  .standards-line .label { grid-column: 1 / -1; padding: 0 0 10px; }
+  .standards-line span, .standards-line .label + span { border-left: 0; padding: 10px 0; border-top: 1px solid var(--hairline); }
+  .standards-line .label { border-top: 0; }
+}
+.nw { white-space: nowrap; }
