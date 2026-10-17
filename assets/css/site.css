@@ -616,7 +616,6 @@ html[lang="ko"] .twin-section .hud-wrap h3 { font-size: 1.04rem; letter-spacing:
   padding: 6px 9px; white-space: nowrap; will-change: transform;
 }
 html[lang="ko"] .twin-label { font-size: 0.8rem; }
-.twin .twin-note { position: absolute; left: 16px; bottom: 12px; z-index: 2; font-size: 0.72rem; color: rgba(247,243,238,0.5); }
 .twin-hud { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(247,243,238,0.18); }
 .twin-hud li {
   display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center;
@@ -637,7 +636,6 @@ html[lang="ko"] .twin-label { font-size: 0.8rem; }
 @media (max-width: 640px) {
   .twin-label, .twin.is-compact .twin-label { font-size: 0.6rem; padding: 3px 5px; }
   html[lang="ko"] .twin-label, html[lang="ko"] .twin.is-compact .twin-label { font-size: 0.64rem; }
-  .twin .twin-note { font-size: 0.62rem; }
 }
 
 /* Small twin inside sector pages (light background variant keeps dark panel) */
