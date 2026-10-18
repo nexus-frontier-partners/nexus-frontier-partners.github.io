@@ -21,5 +21,28 @@ Allow: /
 User-agent: WhatsApp
 Allow: /
 
+# Whole-site copiers and AI training crawlers: never allowed, before or after launch.
+User-agent: HTTrack
+User-agent: Wget
+User-agent: WebCopier
+User-agent: WebZIP
+User-agent: Offline Explorer
+User-agent: TeleportPro
+User-agent: SiteSnagger
+User-agent: WebStripper
+User-agent: WebReaper
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bytespider
+User-agent: Meta-ExternalAgent
+User-agent: cohere-ai
+User-agent: Diffbot
+Disallow: /
+
+# Everyone else (search engines included) until launch.
 User-agent: *
 Disallow: /

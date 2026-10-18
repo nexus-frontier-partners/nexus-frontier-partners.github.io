@@ -1,59 +1,9 @@
-# Nexus Frontier Partners — website
+# Nexus Frontier Partners
 
-Static site for Nexus Frontier Partners (provisional name). Plain HTML, CSS and one small script: no build step, no dependencies. Hosted on GitHub Pages; a custom domain can be mapped later.
+© 2026 Nexus Frontier Partners (provisional name). All rights reserved.
 
-## Structure
+This repository holds the compiled public build of the Nexus Frontier Partners website. No licence is granted:
+the code, design, text and brand assets may not be copied, reproduced, modified or reused
+without written permission.
 
-```
-index.html            Home (English)
-what-we-do.html       Services
-sectors.html          Four sectors: food security, water, AI data centres, renewables (wind, solar, storage)
-how-we-work.html      Appraisal criteria, six stages, sovereign/nonsovereign tracks, standards, fees
-about.html            The firm and its principles
-insights.html         Article list
-insights/*.html       Articles (English)
-contact.html          Contact
-privacy.html          Privacy notice (English)
-404.html              Not-found page
-ko/                   Korean pages (same names)
-assets/css/site.css   Styles
-assets/js/site.js     Contour fields, navigation, video loading
-assets/js/twin.js     Project twin (animated 3D site model, canvas only, no libraries)
-assets/img/           Wordmark (logo-horizontal*.svg, logo-stacked*.svg), mark.svg, favicon.svg
-```
-
-## Wordmark
-
-The wordmark is set in Libre Caslon Display (SIL Open Font License) and stored as outlines, so it renders identically everywhere without loading the font. Two lockups: horizontal (header) and stacked "Nexus Frontier / Partners" (footer, documents). Colours: deep water `#0F1B26` on paper, or paper `#F7F3EE` on dark backgrounds. The pages inline the SVG so it takes the page colour; the files in `assets/img/` are for use elsewhere.
-
-## Media
-
-Photographs and video are hotlinked from Pexels under the Pexels licence (free for commercial use, no attribution required). They are not stored in this repository. Each `<video>` carries up to three sources (`data-src-uhd` 3840×2160, `data-src-qhd` 2560×1440, `data-src-hd` 1920×1080); `site.js` picks the largest that suits the screen, loads it only when the element scrolls into view, and leaves the poster image in place when the visitor prefers reduced motion or has data saving on. Photographs use `srcset` up to 3840 px wide.
-
-To replace them with the firm's own photography, put the files in `assets/img/` and change the URLs in the pages (or in the generator's `PHOTOS` / `VIDEOS` tables).
-
-The "project twin" on the home and sectors pages is an illustrative model drawn in `twin.js`: terrain contours, a reservoir, a treatment plant, farmland, a solar array and a data-centre campus, with water and power flows. It is labelled as illustrative and does not depict any real project. `data-twin="project|water|agri|dc"` selects which elements are shown.
-
-## Things to change before launch
-
-1. **Contact** — the contact page names a person and has no form or email address (there is no mail domain yet). When one exists, add it to the contact pages (`contact.html`, `ko/contact.html`) and to the privacy notices.
-2. **Search engines** — every page carries `<meta name="robots" content="noindex, nofollow">` while the site is in preview. Remove that line from all pages when the firm's domain is live.
-3. **Company details** — the footer and `ko/privacy.html` section 7 (개인정보 보호책임자) need the registered company name, address and the privacy officer's name once the company is incorporated.
-4. **Custom domain** — in the repository settings, Pages → Custom domain. GitHub will create a `CNAME` file. All links in the site are relative, so nothing else needs to change.
-5. **Photos and video** — currently Pexels stock media (see Media above). Replace with the firm's own project photography when available.
-
-## Phones and tablets
-
-Layouts are tuned for three ranges: phones (≤ 640 px), tablets (641–1023 px) and desktop (≥ 1024 px).
-Below 1024 px the header floats over the opening photo or video and turns solid once it has scrolled past; it hides while reading downwards and comes back when scrolling up. The menu opens full screen. Sector cards become a swipeable row on phones, comparison tables become stacked cards, and the five stages become a vertical sequence. Video quality is chosen from the size the clip is drawn at (a portrait phone gets up to 2560 × 1440), and clips pause when off screen or when the tab is hidden.
-
-Icons and link previews: `assets/img/apple-touch-icon.png` (home screen), `favicon-32.png`, and `og.jpg` (1200 × 630 card used by KakaoTalk, iMessage, Slack and others). `SITE_URL` in the generator must be updated when the custom domain is mapped, because preview cards need absolute URLs. `robots.txt` keeps search engines out but lets link-preview fetchers read the pages.
-
-## Editing
-
-Pages are plain HTML. Shared parts (header, footer) are repeated in each file; a change to them has to be made in every page. Keep the design rules: paper background, serif headings, one accent colour, hairlines instead of boxes; photography and video are aerial, muted and infrastructural, never people-centred or corporate stock.
-
-## Design notes
-
-Palette: paper `#F7F3EE`, ink `#2A2925`, graphite `#5F5C55`, hairline `#D8D1C5`, survey blue `#1F4E79`, deep water `#0F1B26`.
-Type: Source Serif 4 (headings, article text), Noto Serif KR (Korean headings), Pretendard (body).
+이 저장소의 코드·디자인·문구·브랜드 자산은 저작권으로 보호되며, 서면 허락 없이 복제·수정·재사용할 수 없습니다.
